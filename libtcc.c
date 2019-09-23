@@ -1089,7 +1089,9 @@ LIBTCCAPI int tcc_add_file(TCCState *s, const char *filename)
         }
         s->filetype = filetype;
     }
-    return tcc_add_file_internal(s, filename, flags);
+    int ret = tcc_add_file_internal(s, filename, flags);
+    s->filetype = 0;
+    return ret;
 }
 
 LIBTCCAPI int tcc_add_library_path(TCCState *s, const char *pathname)

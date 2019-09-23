@@ -21,6 +21,7 @@ LIBS =
 CFLAGS += -I$(TOP)
 CFLAGS += $(CPPFLAGS)
 VPATH = $(TOPSRC)
+OS=linux
 
 ifdef CONFIG_WIN32
  ifneq ($(CONFIG_static),yes)
@@ -47,7 +48,7 @@ else
  ifdef CONFIG_OSX
   NATIVE_TARGET = $(ARCH)-osx
   LDFLAGS += -flat_namespace -undefined warning
-  export MACOSX_DEPLOYMENT_TARGET := 10.2
+  export MACOSX_DEPLOYMENT_TARGET := 10.6
  endif
 endif
 
@@ -57,7 +58,10 @@ TCCFLAGS-win = -B$(TOPSRC)/win32 -I$(TOPSRC)/include -I$(TOPSRC) -I$(TOP) -L$(TO
 TCCFLAGS = $(TCCFLAGS$(CFGWIN))
 TCC = $(TOP)/tcc$(EXESUF) $(TCCFLAGS)
 ifdef CONFIG_OSX
- TCCFLAGS += -D_ANSI_SOURCE
+ 	TCCFLAGS += -D_ANSI_SOURCE
+ 	OS=macos
+else ifdef CONFIG_WIN32
+	OS=windows
 endif
 
 CFLAGS_P = $(CFLAGS) -pg -static -DCONFIG_TCC_STATIC -DTCC_PROFILE
@@ -88,7 +92,7 @@ PROGS = tcc$(EXESUF)
 TCCLIBS = $(LIBTCC1) $(LIBTCC) $(LIBTCCDEF)
 TCCDOCS = tcc.1 tcc-doc.html tcc-doc.info
 
-all: $(PROGS) $(TCCLIBS) $(TCCDOCS)
+all: tcc.$(OS).zip $(PROGS) $(TCCLIBS) $(TCCDOCS)
 
 # cross compiler targets to build
 TCC_X = i386 x86_64 i386-win32 x86_64-win32 x86_64-osx arm arm64 arm-wince c67
@@ -215,6 +219,12 @@ libtcc.so: $(LIBTCC_OBJ)
 libtcc.so: CFLAGS+=-fPIC
 libtcc.so: LDFLAGS+=-fPIC
 
+libtcc.dylib: $(LIBTCC_OBJ)
+	$(CC) -dynamiclib  -o $@ $^ $(LDFLAGS)
+
+libtcc.dylib: CFLAGS+=-fPIC
+libtcc.dylib: LDFLAGS+=-fPIC
+
 # windows dynamic libtcc library
 libtcc.dll : $(LIBTCC_OBJ)
 	$(CC) -shared -o $@ $^ $(LDFLAGS)
@@ -232,6 +242,15 @@ libtcc1.a : tcc$(EXESUF) FORCE
 # Cross libtcc1.a
 %-libtcc1.a : %-tcc$(EXESUF) FORCE
 	@$(MAKE) -C lib DEFINES='$(DEF-$*)' CROSS_TARGET=$*
+
+tcc.macos.zip: tcc libtcc.dylib libtcc.a
+	zip $@ $^
+
+tcc.linux.zip: tcc libtcc.so libtcc.a
+	zip $@ $^
+
+tcc.windows.zip: tcc.exe libtcc.dll libtcc.a
+	7za a -tzip $@ $^
 
 .PRECIOUS: %-libtcc1.a
 FORCE:
@@ -354,6 +373,7 @@ clean:
 	rm -f  *~ *.o *.a *.so* *.out *.log lib*.def *.exe *.dll a.out tags TAGS
 	@$(MAKE) -C lib $@
 	@$(MAKE) -C tests $@
+	rm -f tcc.$(OS).zip
 
 distclean: clean
 	rm -f config.h config.mak config.texi tcc.1 tcc-doc.info tcc-doc.html
