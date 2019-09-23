@@ -250,7 +250,8 @@ tcc.linux.zip: tcc libtcc.so libtcc1.a
 	zip $@ $^
 
 tcc.windows.zip: tcc.exe libtcc.dll libtcc1.a
-	7za a -tzip $@ $^
+	7za --version
+	# a -tzip $@ $^
 
 .PRECIOUS: %-libtcc1.a
 FORCE:

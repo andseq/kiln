@@ -38,5 +38,5 @@ deploy:
          - tcc.windows.zip
      skip_cleanup: true
      on:
-         repo: andseq/clay
+         repo: andseq/tinycc
          tags: true
