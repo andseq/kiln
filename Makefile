@@ -243,13 +243,13 @@ libtcc1.a : tcc$(EXESUF) FORCE
 %-libtcc1.a : %-tcc$(EXESUF) FORCE
 	@$(MAKE) -C lib DEFINES='$(DEF-$*)' CROSS_TARGET=$*
 
-tcc.macos.zip: tcc libtcc.dylib libtcc.a
+tcc.macos.zip: tcc libtcc.dylib libtcc1.a
 	zip $@ $^
 
-tcc.linux.zip: tcc libtcc.so libtcc.a
+tcc.linux.zip: tcc libtcc.so libtcc1.a
 	zip $@ $^
 
-tcc.windows.zip: tcc.exe libtcc.dll libtcc.a
+tcc.windows.zip: tcc.exe libtcc.dll libtcc1.a
 	7za a -tzip $@ $^
 
 .PRECIOUS: %-libtcc1.a
