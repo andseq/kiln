@@ -45,7 +45,7 @@ clay.linux.zip: bundle
 	zip -r $@ clay
 
 clay.windows.zip: bundle
-	7za a -tzip $@ -r clay
+	7z a -tzip $@ -r clay
 
 tinycc/clay: tinycc/config.mak
 	 $(MAKE) -C tinycc
@@ -82,11 +82,11 @@ bundle-clay-win:
 	mkdir -p clay/examples
 	cp $(PROGS) clay
 	cp tinycc/libtcc1.a clay
-	cp tinycc/win32/lib/*.def clay/lib
-	cp tinycc/tcclib.h tinycc/libtcc.h clay/include
-	cp tinycc/win32/include clay/include
-	cp tinycc/win32/examples clay/examples
 	cp tinycc/libtcc.dll tinycc/libtcc.def clay/lib
+
+	cp tinycc/src/tcclib.h tinycc/src/libtcc.h clay/include
+	cp -r tinycc/win32/lib/*.def clay/lib
+	cp -r tinycc/win32/examples clay/examples
 
 	cp -r vendor/all/include/* clay/include
 	cp -r vendor/$(OSFLAG)/include/* clay/include
