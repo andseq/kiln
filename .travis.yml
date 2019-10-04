@@ -30,10 +30,10 @@ deploy:
      provider: releases
      api_key: $DEPLOY_KEY
      file:
-         - clay.linux.zip
-         - clay.macos.zip
-         - clay.windows.zip
+         - kiln.linux.zip
+         - kiln.macos.zip
+         - kiln.windows.zip
      skip_cleanup: true
      on:
-         repo: andseq/clay
+         repo: andseq/tinycc
          tags: true
