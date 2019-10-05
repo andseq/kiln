@@ -346,6 +346,8 @@ static void clay_plugin_init(TCCState *s) {
 void clay_plugin_load(const char* filename) {
     TCCState *s = tcc_new();
     clay_init_tcc(s);
+    s->do_bounds_check = 1; // enable bounds check for plugins
+    s->do_debug = 1;
 
     sprintf(g_clay.plugin_file, "%s/%s", g_clay.path, filename);
     strcpy(g_clay.plugin_path, g_clay.plugin_file);
