@@ -45,7 +45,7 @@ kiln.linux.zip: bundle
 	zip -r $@ kiln
 
 kiln.windows.zip: bundle
-	7za a -tzip $@ -r kiln
+	7z a -tzip $@ -r kiln
 
 tinycc/kiln: tinycc/config.mak
 	 $(MAKE) -C tinycc
