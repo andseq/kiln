@@ -17,7 +17,7 @@ endif
 LIBTCC = libtcc.a
 LIBTCC1 = libtcc1.a
 LIBS =
-CFLAGS += -I$(TOP)
+CFLAGS += -I$(TOP) -std=c99
 CFLAGS += $(CPPFLAGS)
 VPATH = $(TOPSRC)
 OSFLAG = linux

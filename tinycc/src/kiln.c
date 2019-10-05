@@ -151,6 +151,11 @@ struct Clay {
         return 0;
     }
 
+    static void clay_fwatch_destroy(ClayFwatch* fw) {
+        close(g_clay.watcher->fd);
+        tcc_free(g_clay.watcher);
+    }
+
 #elif defined(__linux__)
     #define DLLSUF ".so"
 
@@ -177,6 +182,9 @@ struct Clay {
         return 0;
     }
 
+    static void clay_fwatch_destroy(ClayFwatch* fw) {
+    }
+
 #elif defined(_WIN32)
     #define DLLSUF ".dll"
 
@@ -197,7 +205,7 @@ struct Clay {
         HINSTANCE hinst = GetModuleHandle(NULL);
 
         GetModuleFileNameA(hinst, g_clay.path, 4096);
-        normalize_slashes(strlwr(path));
+        normalize_slashes(strlwr(g_clay.path));
         char *basedir = strrchr(g_clay.path, '/');
         if (basedir) *basedir = '\0';
     }
@@ -211,8 +219,8 @@ struct Clay {
         //     -1,                 // strlen(path),    // int  cbMultiByte,
         //     wpath,              // LPWSTR lpWideCharStr,
         //     1024                // int cchWideChar
-        WCHAR wpath[1024];
-        MultiByteToWideChar(CP_UTF8, MB_PRECOMPOSED, path, -1, wpath, 1024);
+        // WCHAR wpath[1024];
+        // MultiByteToWideChar(CP_UTF8, MB_PRECOMPOSED, g_clay.path, -1, wpath, 1024);
 
         // BOOL success = ReadDirectoryChangesW(directory,
         //                                     watcher->read_buffer,
@@ -226,7 +234,7 @@ struct Clay {
         // if(!success) tcc_error("could not set the watch\n");
 
 
-        hDirectory = CreateFile(wpath,
+        fw->directory = CreateFile(g_clay.path,
             FILE_LIST_DIRECTORY | GENERIC_READ,
             FILE_SHARE_READ | FILE_SHARE_WRITE,
             0,
@@ -256,6 +264,9 @@ struct Clay {
             return 1;
         }
         return 0;
+    }
+
+    static void clay_fwatch_destroy(ClayFwatch* fw) {
     }
 #else
     #error "Unsupported platform"
@@ -405,8 +416,7 @@ void clay_watch_start(const char* filename) {
 void clay_watch_stop(void) {
     if (!g_clay.watcher) return;
 
-    close(g_clay.watcher->fd);
-    tcc_free(g_clay.watcher);
+    clay_fwatch_destroy(g_clay.watcher);
     g_clay.watcher = NULL;
 }
 
