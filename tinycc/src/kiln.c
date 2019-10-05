@@ -244,9 +244,10 @@ struct Clay {
             );
 
         fw->o.hEvent = CreateEvent(0,0,0,0);
-        ReadDirectoryChangesW(fw->directory, &fw->fni, sizeof(fw->fni), FALSE,
+        BOOL success = ReadDirectoryChangesW(fw->directory, &fw->fni, sizeof(fw->fni), FALSE,
             FILE_NOTIFY_CHANGE_LAST_WRITE, &fw->b, &fw->o, 0);
 
+        if(!success) tcc_error("could not set the watch\n");
         strcpy(fw->filename, filename);
         return fw;
     }
