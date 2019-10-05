@@ -17,7 +17,7 @@ endif
 LIBTCC = libtcc.a
 LIBTCC1 = libtcc1.a
 LIBS =
-CFLAGS += -I$(TOP) -std=c99
+CFLAGS += -I$(TOP)
 CFLAGS += $(CPPFLAGS)
 VPATH = $(TOPSRC)
 OSFLAG = linux
@@ -139,7 +139,7 @@ kiln.o tcc.o $(LIBTCC_OBJ):	DEFINES += -DONE_SOURCE=0
 
 # target specific object rule
 %.o: src/%.c $(LIBTCC_INC)
-	$(CC) -o $@ -c $< $(DEFINES) $(CFLAGS)
+	$(CC) -std=c99 -o $@ -c $< $(DEFINES) $(CFLAGS)
 
 # additional dependencies
 tcc.o : src/tcctools.c
