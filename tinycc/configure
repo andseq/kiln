@@ -366,7 +366,7 @@ fi
 
 # a final configuration tuning
 if ! echo "$cc" | grep -q "tcc"; then
-  OPT1="-Wdeclaration-after-statement -fno-strict-aliasing"
+  OPT1="-fno-strict-aliasing"
   # we want -Wno- but gcc does not always reject unknown -Wno- options
   OPT2="-Wpointer-sign -Wsign-compare -Wunused-result"
   if echo "$cc" | grep -q "clang"; then
