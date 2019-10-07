@@ -111,6 +111,7 @@ bundle-kiln-win:
 	cp vendor/all/include/libc/stddef.h kiln/include
 	cp vendor/all/include/libc/stdarg.h kiln/include
 	cp vendor/all/include/libc/stdbool.h kiln/include
+	cp vendor/all/include/libc/alloca.h kiln/include
 	cp -r vendor/$(OSFLAG)/include/* kiln/include
 	cp -r vendor/$(OSFLAG)/lib/* kiln/lib
 
