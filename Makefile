@@ -67,8 +67,8 @@ FORCE:
 
 test-win:
 	cp -r examples/dux/* kiln
+	ls kiln
 	kiln/kiln.exe -vv
-	# kiln/kiln -lSDL2
 
 # --------------------------------------------------------------------------
 # install kiln
