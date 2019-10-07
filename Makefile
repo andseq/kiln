@@ -56,7 +56,7 @@ tinycc/tcc: tinycc/config.mak
 	 $(MAKE) -C tinycc
 
 tinycc/config.mak:
-	cd tinycc && ./configure --disable-static
+	cd tinycc && ./configure --disable-static && cat config.h
 
 $(PROGS): FORCE
 
