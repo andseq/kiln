@@ -67,6 +67,7 @@ FORCE:
 
 test-win:
 	cp -r examples/dux/* kiln
+	ls kiln/include
 	kiln/kiln.exe -vv
 	kiln/kiln.exe
 
@@ -106,7 +107,7 @@ bundle-kiln-win:
 	cp -r examples/* kiln/examples
 	cp -r etc/* kiln/etc
 
-	cp -r vendor/all/include/* kiln/include
+	# cp -r vendor/all/include/* kiln/include
 	cp -r vendor/$(OSFLAG)/include/* kiln/include
 	cp -r vendor/$(OSFLAG)/lib/* kiln/lib
 
