@@ -116,7 +116,8 @@ bundle-kiln-win:
 	cp tinycc/src/tcclib.h tinycc/src/libtcc.h kiln/include
 	cp tinycc/src/clay.h kiln/include
 
-	cp tinycc/libtcc.dll tinycc/libtcc.def kiln/lib
+	cp tinycc/libtcc.dll kiln
+	cp tinycc/libtcc.def kiln/lib
 	cp -r tinycc/win32/examples kiln/examples/win32
 
 # 	touch kiln/.kiln
