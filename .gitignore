@@ -26,6 +26,7 @@ kiln
 !vendor/**/*.dll
 !vendor/**/*.dylib
 !vendor/**/*.so
+!vendor/**/tcc
 
 config*.h
 config*.mak
