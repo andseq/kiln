@@ -2,7 +2,6 @@
 #include "tcc.h"
 #include "clay.h"
 #include <dirent.h>
-#include "tcctools.c"
 
 static const char help[] =
     "Clay "TCC_VERSION"\n"
@@ -445,8 +444,6 @@ static void args_parser_add_file(TCCState *s, const char* filename, int filetype
 }
 
 int main(int argc0, char **argv0) {
-    return 0;
-
     int ret, opt, n = 0, t = 0;
     unsigned start_time = 0;
     char path[512];
@@ -470,11 +467,7 @@ int main(int argc0, char **argv0) {
         if (opt == OPT_HELP2) return printf(help2), 1;
 
         if (s->verbose) printf(version);
-        if (opt == OPT_AR) return tcc_tool_ar(s, argc, argv);
-    #ifdef TCC_TARGET_PE
-        if (opt == OPT_IMPDEF) return tcc_tool_impdef(s, argc, argv);
-    #endif
-        // if (opt == OPT_V) return 0;
+
         if (opt == OPT_PRINT_DIRS) {
             print_search_dirs(s);
             return 0;
@@ -562,8 +555,6 @@ int main(int argc0, char **argv0) {
             ret = tcc_run(s, argc, argv);
         } else {
             tcc_error("Can't generate output files, use TCC instead\n");
-            if (s->gen_deps)
-                gen_makedeps(s, s->outfile, s->deps_outfile);
         }
     }
 
