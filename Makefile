@@ -56,7 +56,7 @@ tinycc/tcc: tinycc/config.mak
 	 $(MAKE) -C tinycc
 
 tinycc/config.mak:
-	cd tinycc && ./configure --disable-static && cat config.h
+	cd tinycc && ./configure --disable-static
 
 $(PROGS): FORCE
 
@@ -67,7 +67,9 @@ FORCE:
 
 test-win:
 	cp -r examples/dux/* kiln/
-	kiln/kiln
+	pwd && ls
+	# kiln/kiln -vv
+	# kiln/kiln -lSDL2
 
 # --------------------------------------------------------------------------
 # install kiln
