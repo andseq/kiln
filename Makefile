@@ -92,8 +92,6 @@ bundle-kiln-unx:
 	cp tinycc/src/tcclib.h tinycc/src/libtcc.h kiln/include
 	cp tinycc/src/clay.h kiln/include
 
-
-
 # 	touch kiln/.kiln
 
 bundle-kiln-win:
@@ -112,13 +110,12 @@ bundle-kiln-win:
 	cp -r vendor/$(OSFLAG)/lib/* kiln/lib
 
 	cp $(PROGS) kiln
-	cp tinycc/libtcc1.a kiln
+	cp tinycc/libtcc1.a kiln/lib # windows buld expects tcc1.a in lib
 	cp tinycc/win32/lib/*.def kiln/lib
 	cp tinycc/src/tcclib.h tinycc/src/libtcc.h kiln/include
 	cp tinycc/src/clay.h kiln/include
 
 	cp tinycc/libtcc.dll tinycc/libtcc.def kiln/lib
-	cp -r tinycc/win32/include kiln/include
 	cp -r tinycc/win32/examples kiln/examples/win32
 
 # 	touch kiln/.kiln
