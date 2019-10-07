@@ -445,7 +445,7 @@ static void args_parser_add_file(TCCState *s, const char* filename, int filetype
 }
 
 int main(int argc0, char **argv0) {
-    int ret, opt, n = 0, t = 0;
+    int ret = 0, opt, n = 0, t = 0;
     unsigned start_time = 0;
     char path[512];
 
@@ -457,6 +457,10 @@ int main(int argc0, char **argv0) {
     TCCState *s = tcc_new();
     clay_init_tcc(s);
     g_clay.main = s;
+
+#ifdef _WIN32
+    print_search_dirs(s);
+#else
     #ifdef __APPLE__
     g_clay.kq = -1;
     #endif
@@ -468,10 +472,6 @@ int main(int argc0, char **argv0) {
         if (opt == OPT_HELP2) return printf(help2), 1;
 
         if (s->verbose) printf(version);
-        if (opt == OPT_AR) return tcc_tool_ar(s, argc, argv);
-    #ifdef TCC_TARGET_PE
-        if (opt == OPT_IMPDEF) return tcc_tool_impdef(s, argc, argv);
-    #endif
         // if (opt == OPT_V) return 0;
         if (opt == OPT_PRINT_DIRS) {
             print_search_dirs(s);
@@ -572,5 +572,6 @@ int main(int argc0, char **argv0) {
     if (t) tcc_error("t: nope\n"); /* run more tests with -dt -run */
 
     if (ppfp && ppfp != stdout) fclose(ppfp);
+#endif
     return ret;
 }
