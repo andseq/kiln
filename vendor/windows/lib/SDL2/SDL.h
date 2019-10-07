@@ -29,6 +29,10 @@
 #ifndef SDL_h_
 #define SDL_h_
 
+#ifdef __TINYC__
+#define SDL_MAIN_HANDLED
+#endif
+
 #include "SDL_main.h"
 #include "SDL_stdinc.h"
 #include "SDL_assert.h"
