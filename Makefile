@@ -107,8 +107,9 @@ bundle-kiln-win:
 	cp -r examples/* kiln/examples
 	cp -r etc/* kiln/etc
 
-	cp -r vendor/all/include/* kiln/include
-	cp -rf vendor/$(OSFLAG)/include/* kiln/include
+	# cp -r vendor/all/include/* kiln/include
+	cp vendor/all/include/libc/stddef.h kiln/include
+	cp -r vendor/$(OSFLAG)/include/* kiln/include
 	cp -r vendor/$(OSFLAG)/lib/* kiln/lib
 
 	cp $(PROGS) kiln
