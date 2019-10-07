@@ -26,7 +26,7 @@ endif
 # --------------------------------------------------------------------------
 # running top Makefile
 
-PROGS = tinycc/kiln$(EXESUF) # tinycc/tcc$(EXESUF)
+PROGS = tinycc/kiln$(EXESUF) tinycc/tcc$(EXESUF)
 TCCLIBS = tinycc/libtcc1.a tinycc/libtcc$(DLLSUF) $(LIBTCCDEF)
 
 all: $(PROGS) $(TCCLIBS)
