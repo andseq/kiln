@@ -24,6 +24,8 @@ matrix:
         - choco install mingw
         - choco install 7zip.install
       script:
+        - mingw32-make bundle
+        - mingw32-make test
         - mingw32-make zip
 
 deploy:
