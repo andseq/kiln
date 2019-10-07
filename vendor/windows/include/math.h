@@ -197,31 +197,6 @@ extern "C" {
    int __cdecl _fpclassf(float _X);
 #endif
 
-#ifndef __cplusplus
-  __CRT_INLINE long double __cdecl fabsl (long double x)
-  {
-    long double res;
-    __asm__ ("fabs;" : "=t" (res) : "0" (x));
-    return res;
-  }
-#define _hypotl(x,y) ((long double)_hypot((double)(x),(double)(y)))
-#define _matherrl _matherr
-  __CRT_INLINE long double _chgsignl(long double _Number) { return _chgsign((double)(_Number)); }
-  __CRT_INLINE long double _copysignl(long double _Number,long double _Sign) { return _copysign((double)(_Number),(double)(_Sign)); }
-  __CRT_INLINE float frexpf(float _X,int *_Y) { return ((float)frexp((double)_X,_Y)); }
-
-#if !defined (__ia64__)
-  __CRT_INLINE float __cdecl fabsf (float x)
-  {
-    float res;
-    __asm__ ("fabs;" : "=t" (res) : "0" (x));
-    return res;
-  }
-
-  __CRT_INLINE float __cdecl ldexpf (float x, int expn) { return (float) ldexp (x, expn); }
-#endif
-#else
-  // cplusplus
   __CRT_INLINE long double __cdecl fabsl (long double x)
   {
     long double res;
@@ -244,7 +219,7 @@ extern "C" {
     return res;
   }
   __CRT_INLINE float __cdecl ldexpf (float x, int expn) { return (float) ldexp (x, expn); }
-#ifndef __x86_64
+
   __CRT_INLINE float acosf(float _X) { return ((float)acos((double)_X)); }
   __CRT_INLINE float asinf(float _X) { return ((float)asin((double)_X)); }
   __CRT_INLINE float atanf(float _X) { return ((float)atan((double)_X)); }
@@ -268,8 +243,6 @@ extern "C" {
   __CRT_INLINE float sqrtf(float _X) { return ((float)sqrt((double)_X)); }
   __CRT_INLINE float tanf(float _X) { return ((float)tan((double)_X)); }
   __CRT_INLINE float tanhf(float _X) { return ((float)tanh((double)_X)); }
-#endif
-#endif
 #endif
 
 #ifndef	NO_OLDNAMES
@@ -306,8 +279,8 @@ extern "C" {
 
   /*
   We can't __CRT_INLINE float or double, because we want to ensure truncation
-  to semantic type before classification. 
-  (A normal long double value might become subnormal when 
+  to semantic type before classification.
+  (A normal long double value might become subnormal when
   converted to double, and zero when converted to float.)
   */
 
@@ -403,7 +376,7 @@ extern "C" {
   extern long double __cdecl scalblnl (long double, long);
 
   /* 7.12.7.1 */
-  /* Implementations adapted from Cephes versions */ 
+  /* Implementations adapted from Cephes versions */
   extern double __cdecl cbrt (double);
   extern float __cdecl cbrtf (float);
   extern long double __cdecl cbrtl (long double);
@@ -429,14 +402,14 @@ extern "C" {
   extern float __cdecl erff (float);
   /* TODO
   extern long double __cdecl erfl (long double);
-  */ 
+  */
 
   /* 7.12.8.2 The erfc functions  */
   extern double __cdecl erfc (double);
   extern float __cdecl erfcf (float);
   /* TODO
   extern long double __cdecl erfcl (long double);
-  */ 
+  */
 
   /* 7.12.8.3 The lgamma functions */
   extern double __cdecl lgamma (double);
@@ -496,16 +469,16 @@ extern "C" {
   }
 
   /* 7.12.9.5 */
-  __CRT_INLINE long __cdecl lrint (double x) 
+  __CRT_INLINE long __cdecl lrint (double x)
   {
-    long retval;  
+    long retval;
     __asm__ __volatile__                         \
       ("fldl   %1\n"                             \
        "fistpl %0"  : "=m" (retval) : "m" (x));  \
       return retval;
   }
 
-  __CRT_INLINE long __cdecl lrintf (float x) 
+  __CRT_INLINE long __cdecl lrintf (float x)
   {
     long retval;
     __asm__ __volatile__                         \
@@ -514,7 +487,7 @@ extern "C" {
       return retval;
   }
 
-  __CRT_INLINE long __cdecl lrintl (long double x) 
+  __CRT_INLINE long __cdecl lrintl (long double x)
   {
     long retval;
     __asm__ __volatile__                         \
@@ -523,7 +496,7 @@ extern "C" {
       return retval;
   }
 
-  __CRT_INLINE long long __cdecl llrint (double x) 
+  __CRT_INLINE long long __cdecl llrint (double x)
   {
     long long retval;
     __asm__ __volatile__                         \
@@ -532,7 +505,7 @@ extern "C" {
       return retval;
   }
 
-  __CRT_INLINE long long __cdecl llrintf (float x) 
+  __CRT_INLINE long long __cdecl llrintf (float x)
   {
     long long retval;
     __asm__ __volatile__                         \
@@ -541,7 +514,7 @@ extern "C" {
       return retval;
   }
 
-  __CRT_INLINE long long __cdecl llrintl (long double x) 
+  __CRT_INLINE long long __cdecl llrintl (long double x)
   {
     long long retval;
     __asm__ __volatile__                         \
@@ -594,7 +567,7 @@ extern "C" {
 
   extern long double __cdecl fmodl (long double, long double);
 
-  /* 7.12.10.2 */ 
+  /* 7.12.10.2 */
   extern double __cdecl remainder (double, double);
   extern float __cdecl remainderf (float, float);
   extern long double __cdecl remainderl (long double, long double);
@@ -649,7 +622,7 @@ extern "C" {
   extern long double __cdecl fminl (long double, long double);
 
   /* 7.12.13.1 */
-  /* return x * y + z as a ternary op */ 
+  /* return x * y + z as a ternary op */
   extern double __cdecl fma (double, double, double);
   extern float __cdecl fmaf (float, float, float);
   extern long double __cdecl fmal (long double, long double, long double);
@@ -657,11 +630,11 @@ extern "C" {
 
 #if 0 // gr: duplicate, see below
   /* 7.12.14 */
-  /* 
+  /*
   *  With these functions, comparisons involving quiet NaNs set the FP
   *  condition code to "unordered".  The IEEE floating-point spec
   *  dictates that the result of floating-point comparisons should be
-  *  false whenever a NaN is involved, with the exception of the != op, 
+  *  false whenever a NaN is involved, with the exception of the != op,
   *  which always returns true: yes, (NaN != NaN) is true).
   */
 
@@ -713,7 +686,7 @@ extern "C++" {
     else _N = (unsigned int)(-_Y);
     for(_Ty _Z = _Ty(1);;_X *= _X) {
       if((_N & 1)!=0) _Z *= _X;
-      if((_N >>= 1)==0) return (_Y < 0 ? _Ty(1) / _Z : _Z); 
+      if((_N >>= 1)==0) return (_Y < 0 ? _Ty(1) / _Z : _Z);
     }
   }
 }
@@ -722,11 +695,11 @@ extern "C++" {
 #pragma pack(pop)
 
 /* 7.12.14 */
-/* 
+/*
  *  With these functions, comparisons involving quiet NaNs set the FP
  *  condition code to "unordered".  The IEEE floating-point spec
  *  dictates that the result of floating-point comparisons should be
- *  false whenever a NaN is involved, with the exception of the != op, 
+ *  false whenever a NaN is involved, with the exception of the != op,
  *  which always returns true: yes, (NaN != NaN) is true).
  */
 
