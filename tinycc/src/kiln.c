@@ -445,6 +445,9 @@ static void args_parser_add_file(TCCState *s, const char* filename, int filetype
 }
 
 int main(int argc0, char **argv0) {
+    #ifdef _WIN32
+    return 0;
+    #endif
     int ret = 0, opt, n = 0, t = 0;
     unsigned start_time = 0;
     char path[512];
