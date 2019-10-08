@@ -844,12 +844,20 @@ static void pe_build_imports(struct pe_info *pe)
 #ifdef TCC_IS_NATIVE
                 if (pe->type == PE_RUN) {
                     if (dllref) {
-                        if ( !dllref->handle )
+                        if ( !dllref->handle ) {
                             dllref->handle = LoadLibrary(dllref->name);
+                            if (!dllref->handle) {  // lib not found in standard path
+                                char buf[1024];     // fallback to search on the user lib paths
+                                for(int i = 0; i < pe->s1->nb_library_paths && !dllref->handle; i++) {
+                                    snprintf(buf, sizeof(buf), "%s\\%s", pe->s1->library_paths[i], dllref->name);
+                                    dllref->handle = LoadLibrary(buf);
+                                }
+                            }
+                            if (!dllref->handle) tcc_error("can't load dll: %s\n", dllref->name);
+                        }
                         v = (ADDR3264)GetProcAddress(dllref->handle, ordinal?(char*)0+ordinal:name);
                     }
-                    if (!v)
-                        tcc_error_noabort("can't build symbol '%s'", name);
+                    if (!v) tcc_error_noabort("can't build symbol '%s'", name);
                 } else
 #endif
                 if (ordinal) {
@@ -1263,7 +1271,7 @@ static int pe_check_symbols(struct pe_info *pe)
                     put_elf_reloc(symtab_section, text_section,
                         offset + 8, R_XXX_THUNKFIX, is->iat_index); // offset to IAT position
 #else
-                    put_elf_reloc(symtab_section, text_section, 
+                    put_elf_reloc(symtab_section, text_section,
                         offset + 2, R_XXX_THUNKFIX, is->iat_index);
 #endif
                     is->thk_offset = offset;
