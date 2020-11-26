@@ -276,7 +276,7 @@ static void clay_init_tcc(TCCState *s) {
     tcc_set_lib_path(s, g_clay.path);
     tcc_set_output_type(s, TCC_OUTPUT_MEMORY);
 
-    char path[512];
+    char path[1024];
     sprintf(path, "%s/include/libc", s->tcc_lib_path);
     tcc_add_include_path(s, path);
 
